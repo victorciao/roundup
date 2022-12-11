@@ -6,7 +6,11 @@ To get to the actual business logic of the application quickly and not have to c
 
 This is the first time I've worked with Redux Toolkit and the new paradigm for creating store slices, updating and accessing state, and using side effects.
 
-To run the app without downloading it and installing its dependencies, open _____ to view it in your browser.
+To run the app without downloading it and installing its dependencies, open [https://victorciao.github.io/roundup/](https://victorciao.github.io/roundup/) to view it in your browser.
+
+Note 1: The API access token will likely have expired by the time the interviewer is reading this. Please ask me to refresh it and redeploy the app.
+
+Note 2: If the interviewer is viewing the app in Chrome, they will run into a CORS issue and need to set up a proxy service or use a Chrome extension to bypass it.
 
 ## Getting Started
 
