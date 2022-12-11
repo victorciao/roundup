@@ -12,6 +12,8 @@ Note 1: The API access token will likely have expired by the time the interviewe
 
 Note 2: If the interviewer is viewing the app in Chrome, they will run into a CORS issue and need to set up a proxy service or use a Chrome extension to bypass it.
 
+Note 3: I had to make the repo public for now to get Github Pages for free. Once the interview has looked at the app, I'll make it private again.
+
 ## Getting Started
 
 In the project directory, you can run:
