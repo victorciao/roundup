@@ -27,10 +27,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the app to the `build` folder.
 
-The build is minified and the filenames include the hashes.
+### `yarn deploy`
+
+Deploys the app to Github Pages.
 
 ## File Organization & Architecture
 
