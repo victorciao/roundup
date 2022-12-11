@@ -3,34 +3,36 @@ import { create, fetch } from './savingsGoalsApi';
 
 export const fetchSavingsGoals = createAsyncThunk(
   'savingsGoals/fetch',
-  async (accountUid) => {
+  async (accountUid, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
     try {
       const response = await fetch(accountUid);
       const { savingsGoalList, errors } = response;
       if (savingsGoalList) {
         return { accountUid, savingsGoals: savingsGoalList };
       } else {
-        return Promise.reject(errors);
+        return rejectWithValue(errors);
       }
     } catch (error) {
-      return Promise.reject([{ message: error }]);
+      return rejectWithValue([{ message: error }]);
     }
   }
 );
 
 export const createSavingsGoal = createAsyncThunk(
   'savingsGoals/create',
-  async ({ accountUid, currency, name }) => {
+  async ({ accountUid, currency, name }, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
     try {
       const response = await create(accountUid, currency, name);
       const { savingsGoalUid, errors } = response;
       if (savingsGoalUid) {
         return { accountUid, name, savingsGoalUid };
       } else {
-        return Promise.reject(errors);
+        return rejectWithValue(errors);
       }
     } catch (error) {
-      return Promise.reject([{ message: error }]);
+      return rejectWithValue([{ message: error }]);
     }
   }
 );

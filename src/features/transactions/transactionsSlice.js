@@ -6,7 +6,8 @@ const OUTBOUND = 'OUT';
 
 export const fetchTransactions = createAsyncThunk(
   'transactions/fetch',
-  async (accountUid) => {
+  async (accountUid, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
     try {
       const { dateRanges, responses } = await fetch(accountUid);
       const transactionLists = [], size = dateRanges.length;
@@ -18,12 +19,12 @@ export const fetchTransactions = createAsyncThunk(
             transactions: feedItems
           });
         } else {
-          return Promise.reject(errors);
+          return rejectWithValue(errors);
         }
       }
       return { accountUid, transactionLists };
     } catch (error) {
-      return Promise.reject([{ message: error }]);
+      return rejectWithValue([{ message: error }]);
     }
   }
 );
@@ -31,7 +32,8 @@ export const fetchTransactions = createAsyncThunk(
 export const addToSavingsGoal = createAsyncThunk(
   'savingsGoals/addTo',
   async ({ accountUid, currency, amountId, savingsGoalUid }, thunkApi) => {
-    const state = thunkApi.getState();
+    const { getState, rejectWithValue } = thunkApi;
+    const state = getState();
     const { minorUnits } = state.transactions.roundUpAmounts[accountUid][amountId];
     try {
       const response = await addTo(accountUid, currency, savingsGoalUid, minorUnits);
@@ -39,10 +41,10 @@ export const addToSavingsGoal = createAsyncThunk(
       if (success) {
         return { accountUid, amountId };
       } else {
-        return Promise.reject(errors);
+        return rejectWithValue(errors);
       }
     } catch (error) {
-      return Promise.reject([{ message: error }]);
+      return rejectWithValue([{ message: error }]);
     }
 
   }
@@ -97,7 +99,6 @@ const transactionsSlice = createSlice({
         state.roundUpAmounts[accountUid][amountId].minorUnits = 0;
       })
       .addCase(addToSavingsGoal.rejected, (state, action) => {
-        console.warn(action.payload);
         state.errors = action.payload;
       });
   }

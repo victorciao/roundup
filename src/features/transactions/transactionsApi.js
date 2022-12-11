@@ -7,12 +7,8 @@ export const fetch = async (accountUid) => {
   const dateRanges = getDateRanges();
   const routes = buildRoutes(accountUid, dateRanges);
   const responses = routes.map((route) => apiClient.get(route));
-  try {
-    const responseJsons = await Promise.all(responses);
-    return { dateRanges, responses: responseJsons };
-  } catch (error) {
-    throw error;
-  }
+  const responseJsons = await Promise.all(responses);
+  return { dateRanges, responses: responseJsons };
 };
 
 const buildRoutes = (accountUid, dateRanges) => {

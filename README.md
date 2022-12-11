@@ -4,7 +4,7 @@
 
 To get to the actual business logic of the application quickly and not have to create the toolchain from scratch, I bootstrapped it with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
-This was also the first time I worked with Redux Toolkit and the new paradigm for creating store slices, updating and accessing state, and using side effects.
+This is the first time I've worked with Redux Toolkit and the new paradigm for creating store slices, updating and accessing state, and using side effects.
 
 To run the app without downloading it and installing its dependencies, open _____ to view it in your browser.
 
@@ -66,7 +66,7 @@ Data in the app do not persist between page loads, and some React components wil
 
 ### UI & Error Handling
 
-I went light on the UI so there is very little styling and no user input validation. User inputs are assumed to be valid, and, if not, errors will be returned by the backend. In addition, errors are handled not as gracefully by rendering an error page for any backend error returned.
+I went light on the UI so there is very little styling and no user input validation. User inputs are assumed to be valid, and, if not, errors will be returned by the backend. In addition, errors are handled not as gracefully by rendering an error component for any backend error returned, which the user cannot recover from.
 
 While requests to add a new savings goal and round-up amounts to a savings goal are inflight, I'd add UI indications (e.g. greying out the buttons, displaying toasts, etc) so the user knows something is happening.
 
@@ -76,7 +76,7 @@ I didn't write unit tests due to the project scope, but, in the ideal world, I'd
 
 ### API Access Token
 
-The API access token is checked into Github so the app can be run by the interviewers out of the box on Github pages. In the ideal world, secrets should not be checked into source, and should, instead, be stored in a `.env` file, or, even better, in a secrets service and fetched with a key.
+The API access token is stored as an environment variable in `.env` and accessed via `process.env`, which isn't the most secure way of handling secrets. In the ideal world, I'd store it in a secrets service and fetched it with a key.
 
 ### Retrying Network Requests
 

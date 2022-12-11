@@ -31,10 +31,6 @@ export function Transactions (props) {
     }
   }, [transactionLists, accountUid, dispatch]);
 
-  console.error(transactionLists);
-  console.error(roundUpAmounts);
-  console.error(errors);
-
   const handleRadioChange = (event) => {
     setAmountId(event.target.value);
   };

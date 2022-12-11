@@ -10,8 +10,6 @@ export function Accounts () {
 
   const [ selectedAccount, setSelectedAccount ] = useState({});
 
-  console.error(accounts);
-
   const handleRadioChange = (event) => {
     const accountUid = event.target.value;
     const account = accounts.find(

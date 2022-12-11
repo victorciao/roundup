@@ -19,8 +19,6 @@ export function SavingsGoals (props) {
   const [ goalUid, setGoalUid ] = useState('');
   const [ goalName, setGoalName ] = useState('');
 
-  console.error(savingsGoals);
-
   const handleRadioChange = (event) => {
     setGoalUid(event.target.value);
   };

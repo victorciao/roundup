@@ -6,7 +6,7 @@ import { fetch } from './accountsApi';
 export const fetchAccounts = createAsyncThunk(
   'accounts/fetch',
   async (_0, thunkApi) => {
-    const { dispatch } = thunkApi;
+    const { dispatch, rejectWithValue } = thunkApi;
     try {
       const response = await fetch();
       const { accounts, errors } = response;
@@ -22,10 +22,10 @@ export const fetchAccounts = createAsyncThunk(
         }
         return accounts;
       } else {
-        return Promise.reject(errors);
+        return rejectWithValue(errors);
       }
     } catch (error) {
-      return Promise.reject([{ message: error }]);
+      return rejectWithValue([{ message: error }]);
     }
   }
 );
