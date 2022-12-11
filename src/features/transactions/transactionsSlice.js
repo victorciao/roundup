@@ -49,9 +49,11 @@ export const addToSavingsGoal = createAsyncThunk(
 );
 
 const initialState = {
-  status: 'idle', // use const
   entities: {},
-  roundUpAmounts: {}, // left this outside main object
+  // this is intentionally left outside `entities`
+  // to make the state more shallow for the purpose
+  // of this project
+  roundUpAmounts: {},
   errors: [],
 };
 
@@ -63,10 +65,13 @@ const transactionsSlice = createSlice({
       const accountUid = action.payload;
       const transactionLists = state.entities[accountUid];
       const amounts = {};
+      // add an id to make accessing individual entries more easily
       let amountId = 0;
       for (const { range, transactions } of transactionLists) {
         const roundUpSum = transactions.reduce((sum, transaction) => {
           const { minorUnits } = transaction.amount;
+          // Starling accounts are only in GBP, EUR, and USD
+          // which are all 2 decimal currencies
           const remainder = minorUnits % 100;
           const roundUpAmount = remainder === 0 ? 0 : 100 - remainder;
           return sum + roundUpAmount;
@@ -78,15 +83,11 @@ const transactionsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTransactions.pending, (state) => {
-        state.status = 'loading';
-      })
       .addCase(fetchTransactions.fulfilled, (state, action) => {
         const { accountUid, transactionLists } = action.payload;
         state.entities[accountUid] =
           transactionLists.map(({ range, transactions }) =>
             ({ range, transactions: transform(transactions) }));
-        state.status = 'succeeded';
       })
       .addCase(fetchTransactions.rejected, (state, action) => {
         state.errors = action.payload;
@@ -96,6 +97,7 @@ const transactionsSlice = createSlice({
         state.roundUpAmounts[accountUid][amountId].minorUnits = 0;
       })
       .addCase(addToSavingsGoal.rejected, (state, action) => {
+        console.warn(action.payload);
         state.errors = action.payload;
       });
   }
@@ -103,6 +105,7 @@ const transactionsSlice = createSlice({
 
 const transform = (transactions) => {
   return transactions
+    // only round up outbound transactions
     .filter((transaction) => transaction.direction === OUTBOUND)
     .map((transaction) => {
       const { minorUnits } = transaction.amount;
@@ -112,7 +115,7 @@ const transform = (transactions) => {
 
 export const { setRoundUpAmounts } = transactionsSlice.actions;
 
-export const selectStatus = (state) => state.transactions.status;
+// function is curried so `accountUid` can be passed in
 export const selectTransactionLists = (accountUid) => (state) => state.transactions.entities[accountUid];
 export const selectRoundUpAmounts = (accountUid) => (state) => state.transactions.roundUpAmounts[accountUid];
 export const selectErrors = (state) => state.transactions.errors;

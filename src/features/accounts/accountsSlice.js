@@ -13,6 +13,10 @@ export const fetchAccounts = createAsyncThunk(
       if (accounts) {
         for (const account of accounts) {
           const { accountUid } = account;
+          // requests to fetch transaction feeds
+          // and savings goals are dependent on
+          // the `accountUid`, so fetch them as soon
+          // as the accounts are fetched
           dispatch(fetchTransactions(accountUid));
           dispatch(fetchSavingsGoals(accountUid));
         }
@@ -27,7 +31,6 @@ export const fetchAccounts = createAsyncThunk(
 );
 
 const initialState = {
-  status: 'idle', // use const
   entities: [],
   errors: [],
 };
@@ -38,12 +41,8 @@ const accountsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAccounts.pending, (state) => {
-        state.status = 'loading';
-      })
       .addCase(fetchAccounts.fulfilled, (state, action) => {
         state.entities = transform(action.payload);
-        state.status = 'succeeded';
       })
       .addCase(fetchAccounts.rejected, (state, action) => {
         state.errors = action.payload;
@@ -58,7 +57,6 @@ const transform = (accounts) => {
   });
 };
 
-export const selectStatus = (state) => state.accounts.status;
 export const selectAccounts = (state) => state.accounts.entities;
 export const selectErrors = (state) => state.accounts.errors;
 

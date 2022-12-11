@@ -7,9 +7,9 @@ import {
   selectTransactionLists,
   setRoundUpAmounts
 } from '../transactions/transactionsSlice';
-import { Errors } from '../Errors/Errors';
+import { Errors } from '../errors/Errors';
 
-export function Transactions (props) { // accountUid, currency
+export function Transactions (props) {
   const { accountUid, currency } = props;
 
   const dispatch = useDispatch();
@@ -19,9 +19,13 @@ export function Transactions (props) { // accountUid, currency
   const errors = useSelector(selectErrors);
 
   const [ amountId, setAmountId ] = useState();
+  // additional state to prevent rerendering every time
+  // the user clicks on a different radio option
   const [ finalAmountId, setFinalAmountId ] = useState();
 
   useEffect(() => {
+    // the amounts to round up can only be computed
+    // once the transactions are fetched
     if (transactionLists?.length > 0) {
       dispatch(setRoundUpAmounts(accountUid));
     }
@@ -29,16 +33,18 @@ export function Transactions (props) { // accountUid, currency
 
   console.error(transactionLists);
   console.error(roundUpAmounts);
+  console.error(errors);
 
   const handleRadioChange = (event) => {
     setAmountId(event.target.value);
   };
 
-  const handleRadioClick = (event) => {
-    event.preventDefault();
+  const handleRadioClick = () => {
     setFinalAmountId(amountId);
   };
 
+  // convert from an ISO timestamp to
+  // a more human readable date string
   const toDateString = (isoString) => {
     return new Date(isoString).toDateString();
   };
@@ -51,7 +57,10 @@ export function Transactions (props) { // accountUid, currency
         <h2>Statement Period</h2>
           <div onChange={handleRadioChange}>
             {roundUpAmounts ?
-              Object.entries(roundUpAmounts).map(([amountId, { range,minorUnits }]) => (
+              Object.entries(roundUpAmounts).map(([
+                amountId,
+                { range, minorUnits }
+              ]) => (
                 <div key={amountId}>
                   <input
                     type='radio'

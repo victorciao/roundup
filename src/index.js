@@ -9,6 +9,8 @@ import { fetchAccounts } from './features/accounts/accountsSlice';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
+// fetch accounts ASAP because we need
+// to show them when the app loads
 store.dispatch(fetchAccounts());
 
 root.render(

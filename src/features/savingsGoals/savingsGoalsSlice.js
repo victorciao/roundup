@@ -36,7 +36,6 @@ export const createSavingsGoal = createAsyncThunk(
 );
 
 const initialState = {
-  status: 'idle', // use const
   entities: {},
   errors: [],
 };
@@ -47,13 +46,9 @@ const savingsGoalsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchSavingsGoals.pending, (state) => {
-        state.status = 'loading';
-      })
       .addCase(fetchSavingsGoals.fulfilled, (state, action) => {
         const { accountUid, savingsGoals } = action.payload;
         state.entities[accountUid] = transform(savingsGoals);
-        state.status = 'succeeded';
       })
       .addCase(fetchSavingsGoals.rejected, (state, action) => {
         state.errors = action.payload;
@@ -79,8 +74,9 @@ const transform = (goals) => {
   });
 };
 
-export const selectStatus = (state) => state.savingsGoals.status;
-export const selectSavingsGoals = (accountUid) => (state) => state.savingsGoals.entities[accountUid];
+// function is curried so `accountUid` can be passed in
+export const selectSavingsGoals = (accountUid) => (state) =>
+  state.savingsGoals.entities[accountUid];
 export const selectErrors = (state) => state.savingsGoals.errors;
 
 export default savingsGoalsSlice.reducer;

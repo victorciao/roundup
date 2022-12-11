@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAccounts, selectErrors } from '../accounts/accountsSlice';
 import { Transactions } from '../transactions/Transactions';
-import { Errors } from '../Errors/Errors';
+import { Errors } from '../errors/Errors';
 
 export function Accounts () {  
   const accounts = useSelector(selectAccounts);

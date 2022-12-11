@@ -6,7 +6,7 @@ import {
   selectErrors,
   selectSavingsGoals
 } from '../savingsGoals/savingsGoalsSlice';
-import { Errors } from '../Errors/Errors';
+import { Errors } from '../errors/Errors';
 
 export function SavingsGoals (props) {
   const { accountUid, currency, amountId } = props;
@@ -26,16 +26,19 @@ export function SavingsGoals (props) {
   };
 
   const handleTextChange = (event) => {
-    setGoalName(event.target.value); // handle empty string
+    setGoalName(event.target.value);
   };
 
-  const handleRadioClick = (event) => {
-    event.preventDefault();
-    dispatch(addToSavingsGoal({ accountUid, currency, amountId, savingsGoalUid: goalUid }));
+  const handleRadioClick = () => {
+    dispatch(addToSavingsGoal({
+      accountUid,
+      currency,
+      amountId,
+      savingsGoalUid: goalUid
+    }));
   };
 
-  const handleTextClick = (event) => {
-    event.preventDefault();
+  const handleTextClick = () => {
     dispatch(createSavingsGoal({ accountUid, currency, name: goalName }));
   };
 

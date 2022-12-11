@@ -1,6 +1,8 @@
-import { accessToken } from "../secrets/accessToken";
-
+// not sure how the interviewer will be running this app
+// but I had CORS issues on Chrome and had to use a proxy service
+//
 const corsUrl = 'https://cors-anywhere.herokuapp.com/';
+// const corsUrl = '';
 const apiUrl = 'https://api-sandbox.starlingbank.com/api/v2/';
 
 const Methods = {
@@ -14,7 +16,7 @@ const send = async (method, route, data) => {
     method,
     headers: {
       'Accept': 'application/json',
-      'Authorization': `Bearer ${accessToken}`,
+      'Authorization': `Bearer ${process.env.REACT_APP_API_ACCESS_TOKEN}`,
       'Content-Type': 'application/json',
     },
   };
@@ -25,7 +27,9 @@ const send = async (method, route, data) => {
 
   try {
     const response = await fetch(`${corsUrl}${apiUrl}${route}`, options);
-    return await response.json();
+    return await response.json().catch((error) => {
+      throw error;
+    });
   } catch (error) {
     throw error;
   }
