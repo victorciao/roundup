@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/roundup/static/css/main.c646ab0e.css",
+    "main.js": "/roundup/static/js/main.c1db4a9c.js",
+    "index.html": "/roundup/index.html",
+    "main.c646ab0e.css.map": "/roundup/static/css/main.c646ab0e.css.map",
+    "main.c1db4a9c.js.map": "/roundup/static/js/main.c1db4a9c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c646ab0e.css",
+    "static/js/main.c1db4a9c.js"
+  ]
+}
