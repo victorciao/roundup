@@ -9,7 +9,7 @@ export const fetchAccounts = createAsyncThunk(
     const { dispatch, rejectWithValue } = thunkApi;
     try {
       const response = await fetch();
-      const { accounts, errors } = response;
+      const { accounts, errors, error } = response;
       if (accounts) {
         for (const account of accounts) {
           const { accountUid } = account;
@@ -22,7 +22,7 @@ export const fetchAccounts = createAsyncThunk(
         }
         return accounts;
       } else {
-        return rejectWithValue(errors);
+        return rejectWithValue(errors ?? [{ message: error }]);
       }
     } catch (error) {
       return rejectWithValue([{ message: error }]);
